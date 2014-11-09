@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package com.azubkov.azbfinance;
+package com.azubkov.azbfinance.sync.rateprovider;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
+import com.azubkov.azbfinance.model.Rate;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
- * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
+ * Created on 09.11.14.
+ *
+ * @author Andrey Zubkov
  */
-public class ApplicationTest extends ApplicationTestCase<Application> {
-    public ApplicationTest() {
-        super(Application.class);
-    }
+public interface RateProvider {
+    List<Rate> request() throws IOException;
 }

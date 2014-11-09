@@ -14,16 +14,27 @@
  * limitations under the License.
  */
 
-package com.azubkov.azbfinance;
+package com.azubkov.azbfinance.sync;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
 
 /**
- * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
+ * Created on 09.11.14.
+ * @author Andrey Zubkov
  */
-public class ApplicationTest extends ApplicationTestCase<Application> {
-    public ApplicationTest() {
-        super(Application.class);
+public class AzbAuthenticatorService extends Service {
+
+    private AzbAuthenticator authenticator;
+
+    @Override
+    public void onCreate() {
+        authenticator = new AzbAuthenticator(this);
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return authenticator.getIBinder();
     }
 }

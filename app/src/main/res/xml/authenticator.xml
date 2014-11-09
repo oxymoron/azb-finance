@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright 2014 Andrey Zubkov. All rights reserved.
   ~
@@ -14,8 +15,8 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-</resources>
+<account-authenticator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accountType="@string/sync_account_type"
+    android:icon="@drawable/ic_launcher"
+    android:label="@string/app_name"
+    android:smallIcon="@drawable/ic_launcher" />

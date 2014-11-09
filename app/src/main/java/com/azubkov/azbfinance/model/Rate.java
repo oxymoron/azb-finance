@@ -14,16 +14,40 @@
  * limitations under the License.
  */
 
-package com.azubkov.azbfinance;
+package com.azubkov.azbfinance.model;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
+import com.azubkov.azbfinance.Curr;
+
+import java.util.Date;
 
 /**
- * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
+ * Created on 09.11.14.
+ *
+ * @author Andrey Zubkov
  */
-public class ApplicationTest extends ApplicationTestCase<Application> {
-    public ApplicationTest() {
-        super(Application.class);
+public class Rate {
+
+    private final Curr curr;
+
+    private final Double value;
+
+    private final Date date;
+
+    public Rate(Curr curr, Double value, Date date) {
+        this.curr = curr;
+        this.value = value;
+        this.date = date;
+    }
+
+    public Curr getCurr() {
+        return curr;
+    }
+
+    public Double getValue() {
+        return value;
+    }
+
+    public Date getDate() {
+        return date;
     }
 }
