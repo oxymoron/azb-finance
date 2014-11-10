@@ -28,7 +28,7 @@ import android.net.Uri;
  *
  * @author Andrey Zubkov
  */
-public class FinProvider extends ContentProvider{
+public class FinProvider extends ContentProvider {
 
     private static final UriMatcher matcher = buildUriMatcher();
     private static final int ACCOUNT = 100;
@@ -57,7 +57,7 @@ public class FinProvider extends ContentProvider{
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
         Cursor cursor;
-        switch (matcher.match(uri)){
+        switch (matcher.match(uri)) {
             case ACCOUNT:
                 cursor = openHelper.getReadableDatabase().query(
                         FinContract.AccountEntry.TABLE_NAME,
@@ -90,7 +90,7 @@ public class FinProvider extends ContentProvider{
 
     @Override
     public String getType(Uri uri) {
-        switch (matcher.match(uri)){
+        switch (matcher.match(uri)) {
             case ACCOUNT:
                 return FinContract.AccountEntry.CONTENT_TYPE;
             case ACCOUNT_ID:

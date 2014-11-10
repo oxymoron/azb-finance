@@ -27,8 +27,6 @@ import android.widget.TextView;
 
 import com.azubkov.azbfinance.data.FinContract.AccountEntry;
 
-import java.util.Currency;
-
 /**
  * Created by oxymoron on 02.10.2014.
  */
@@ -77,9 +75,9 @@ public class AccountAdapter extends CursorAdapter {
         double targetAmount = Util.convert(amount, curr, targetCurr);
         viewHolder.convertedAmountView.setText(Util.toCurr(context, targetAmount, targetCurr));
 
-        if (bank.contains("Cбер")){
+        if (bank.contains("Cбер")) {
             viewHolder.iconView.setImageResource(R.drawable.ic_sb_logo);
-        } else if (bank.contains("KEB")){
+        } else if (bank.contains("KEB")) {
             viewHolder.iconView.setImageResource(R.drawable.ic_keb_logo);
         } else {
             viewHolder.iconView.setImageResource(R.drawable.ic_account);

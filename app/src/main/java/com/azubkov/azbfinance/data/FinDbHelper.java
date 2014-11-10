@@ -19,6 +19,7 @@ package com.azubkov.azbfinance.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import com.azubkov.azbfinance.data.FinContract.AccountEntry;
 import com.azubkov.azbfinance.data.FinContract.CurrencyEntry;
 import com.azubkov.azbfinance.data.FinContract.RateEntry;
@@ -39,7 +40,7 @@ public class FinDbHelper extends SQLiteOpenHelper{
             AccountEntry._ID + " integer primary key," +
             AccountEntry.COLUMN_AMOUNT + " real not null, " +
             AccountEntry.COLUMN_BANK + " text not null, " +
-            AccountEntry.COLUMN_CURRENCY + " real not null);";
+                    AccountEntry.COLUMN_CURRENCY + " integer not null);";
 
     private static final String SQL_CURRENCY_CREATE =
             "create table " + CurrencyEntry.TABLE_NAME + " (" +
@@ -50,8 +51,8 @@ public class FinDbHelper extends SQLiteOpenHelper{
             "create table " + RateEntry.TABLE_NAME + " (" +
                     RateEntry._ID + " integer primary key," +
                     RateEntry.COLUMN_TIMESTAMP + " integer not null, " +
-                    RateEntry.COLUMN_BASE + " integer, " +
-                    RateEntry.COLUMN_TO + " integer, " +
+                    RateEntry.COLUMN_FROM_CURR + " integer, " +
+                    RateEntry.COLUMN_TO_CURR + " integer, " +
                     RateEntry.COLUMN_VALUE + " real not null);";
 
     private static final String SQL_ACCOUNT_DELETE = "drop table if exists " + AccountEntry.TABLE_NAME + ";";

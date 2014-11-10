@@ -27,16 +27,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-import com.azubkov.azbfinance.data.FinContract;
 import com.azubkov.azbfinance.data.FinContract.AccountEntry;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class MainFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int ACCOUNT_LOADER = 0;
     private CursorAdapter adapter;
@@ -48,7 +46,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         adapter = new AccountAdapter(getActivity(), null, 0);
 
@@ -90,7 +88,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         adapter.swapCursor(cursor);
         double sum = 0;
         Curr targetCurr = Curr.RUB;
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             double amount = cursor.getDouble(cursor.getColumnIndex(AccountEntry.COLUMN_AMOUNT));
             String currStr = cursor.getString(cursor.getColumnIndex(AccountEntry.COLUMN_CURRENCY));
             Curr curr = Curr.valueOf(currStr);

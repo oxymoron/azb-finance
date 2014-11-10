@@ -21,7 +21,6 @@ import android.content.Context;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
-import java.util.Currency;
 
 /**
  * Created by oxymoron on 02.10.2014.
@@ -35,23 +34,26 @@ public final class Util {
     private static NumberFormat amountFormat;
 
     private static final double[][] convTable = new double[][]{
-        // RUB
-        new double[]{1,         1/USDRUB, RUBKRW    },
-        // USD
-        new double[]{USDRUB,  1,      USDKRW    },
-        // KRW
-        new double[]{1/RUBKRW,    1/USDKRW, 1           }
+            // RUB
+            new double[]{1, 1 / USDRUB, RUBKRW},
+            // USD
+            new double[]{USDRUB, 1, USDKRW},
+            // KRW
+            new double[]{1 / RUBKRW, 1 / USDKRW, 1}
     };
     public static final char THOUSANDS_SEPARATOR = ' ';
 
     public static String toCurr(Context context, double amount, Curr curr) {
         int format;
-        switch (curr){
-            case RUB: format = R.string.rub_format;
+        switch (curr) {
+            case RUB:
+                format = R.string.rub_format;
                 break;
-            case USD: format = R.string.usd_format;
+            case USD:
+                format = R.string.usd_format;
                 break;
-            case KRW: format = R.string.krw_format;
+            case KRW:
+                format = R.string.krw_format;
                 break;
             default:
                 throw new UnsupportedOperationException("Wrong currency: " + curr);
@@ -62,7 +64,7 @@ public final class Util {
     }
 
     private static NumberFormat getAmountFormat() {
-        if (amountFormat == null){
+        if (amountFormat == null) {
             DecimalFormat format = (DecimalFormat) NumberFormat.getInstance();
             DecimalFormatSymbols symbols = format.getDecimalFormatSymbols();
             symbols.setGroupingSeparator(THOUSANDS_SEPARATOR);
@@ -86,12 +88,15 @@ public final class Util {
 
     private static int currToIndex(Curr curr) {
         int index;
-        switch (curr){
-            case RUB: index = 0;
+        switch (curr) {
+            case RUB:
+                index = 0;
                 break;
-            case USD: index = 1;
+            case USD:
+                index = 1;
                 break;
-            case KRW: index = 2;
+            case KRW:
+                index = 2;
                 break;
             default:
                 throw new UnsupportedOperationException("Wrong currency: " + curr);

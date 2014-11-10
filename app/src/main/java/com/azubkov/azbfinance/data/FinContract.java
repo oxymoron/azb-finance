@@ -88,8 +88,8 @@ public class FinContract {
 
         public static final String TABLE_NAME = "rate";
         public static final String COLUMN_TIMESTAMP = "timestamp";
-        public static final String COLUMN_BASE = "base";
-        public static final String COLUMN_TO = "to";
+        public static final String COLUMN_FROM_CURR = "from_curr";
+        public static final String COLUMN_TO_CURR = "to_curr";
         public static final String COLUMN_VALUE = "value";
 
 
