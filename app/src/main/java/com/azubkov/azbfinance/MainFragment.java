@@ -29,7 +29,7 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.azubkov.azbfinance.data.FinContract.AccountEntry;
+import com.azubkov.azbfinance.data.FinContract.Accounts;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -70,12 +70,13 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return new CursorLoader(
                 getActivity(),
-                AccountEntry.CONTENT_URI,
+                Accounts.CONTENT_URI,
                 new String[]{
-                        AccountEntry._ID,
-                        AccountEntry.COLUMN_CURRENCY,
-                        AccountEntry.COLUMN_AMOUNT,
-                        AccountEntry.COLUMN_BANK
+                        Accounts._ID,
+                        Accounts.ACCOUNT_ID,
+                        Accounts.ACCOUNT_CURRENCY,
+                        Accounts.ACCOUNT_AMOUNT,
+                        Accounts.ACCOUNT_BANK
                 },
                 null,
                 null,
@@ -89,8 +90,8 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         double sum = 0;
         Curr targetCurr = Curr.RUB;
         while (cursor.moveToNext()) {
-            double amount = cursor.getDouble(cursor.getColumnIndex(AccountEntry.COLUMN_AMOUNT));
-            String currStr = cursor.getString(cursor.getColumnIndex(AccountEntry.COLUMN_CURRENCY));
+            double amount = cursor.getDouble(cursor.getColumnIndex(Accounts.ACCOUNT_AMOUNT));
+            String currStr = cursor.getString(cursor.getColumnIndex(Accounts.ACCOUNT_CURRENCY));
             Curr curr = Curr.valueOf(currStr);
             double converted = Util.convert(amount, curr, targetCurr);
             sum += converted;

@@ -21,6 +21,7 @@ import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncRequest;
 import android.content.SyncResult;
@@ -28,22 +29,20 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.azubkov.azbfinance.MainActivity;
 import com.azubkov.azbfinance.R;
+import com.azubkov.azbfinance.data.FinContract.Rates;
 import com.azubkov.azbfinance.model.Rate;
 import com.azubkov.azbfinance.sync.rateprovider.RateProvider;
 import com.azubkov.azbfinance.sync.rateprovider.YahooApiProvider;
-import com.turbomanage.httpclient.BasicHttpClient;
-import com.turbomanage.httpclient.HttpResponse;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 
 /**
  * Created on 09.11.14.
+ *
  * @author Andrey Zubkov
  */
 public class AzbSyncAdapter extends AbstractThreadedSyncAdapter {
@@ -51,7 +50,7 @@ public class AzbSyncAdapter extends AbstractThreadedSyncAdapter {
     private static String LOG_TAG = AzbSyncAdapter.class.getSimpleName();
 
     public static final int SYNC_INTERVAL = 10000;
-    public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
+    public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
 
     private final RateProvider rateProvider;
 
@@ -70,13 +69,22 @@ public class AzbSyncAdapter extends AbstractThreadedSyncAdapter {
         Log.d(LOG_TAG, "Syncing...");
         try {
             List<Rate> rateList = rateProvider.request();
-
+            List<ContentValues> values = new ArrayList<ContentValues>();
+            for (Rate r : rateList) {
+                ContentValues v = new ContentValues();
+                v.put(Rates.RATE_TIMESTAMP, r.getDate().getTime());
+                v.put(Rates.RATE_VALUE, r.getValue());
+                v.put(Rates.RATE_CURRENCY, r.getCurr().name());
+                values.add(v);
+            }
+            ContentResolver resolver = getContext().getContentResolver();
+            ContentValues[] valuesArray = values.toArray(new ContentValues[rateList.size()]);
+            resolver.bulkInsert(Rates.CONTENT_URI, valuesArray);
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Rate provider exception", e);
+            Log.e(LOG_TAG, "Rate provider e");
         }
 
     }
-
 
 
     public static void initSyncAdapter(Context context) {
@@ -90,8 +98,8 @@ public class AzbSyncAdapter extends AbstractThreadedSyncAdapter {
                 context.getString(R.string.app_name),
                 context.getString(R.string.sync_account_type)
         );
-        if (accountManager.getPassword(newAccount) == null){
-            if (!accountManager.addAccountExplicitly(newAccount, "", null)){
+        if (accountManager.getPassword(newAccount) == null) {
+            if (!accountManager.addAccountExplicitly(newAccount, "", null)) {
                 return null;
             }
             onAccountCreated(newAccount, context);

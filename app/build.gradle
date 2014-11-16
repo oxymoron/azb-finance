@@ -48,4 +48,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.+'
     compile 'com.android.support:cardview-v7:21.+'
     compile 'com.turbomanage.basic-http-client:http-client-android:0.89'
+//    compile 'com.octo.android.robospice:robospice-retrofit:1.4.14'
 }

@@ -26,11 +26,11 @@ import com.turbomanage.httpclient.HttpResponse;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -38,7 +38,7 @@ import java.util.Scanner;
  *
  * @author Andrey Zubkov
  */
-public class YahooApiProvider implements RateProvider{
+public class YahooApiProvider implements RateProvider {
 
     public static final String YAHOO_FINANCE_URL =
             "http://finance.yahoo.com/d/quotes.csv?s=RUB=X+KRW=X+EUR=X&f=sl1d1t1";
@@ -49,11 +49,11 @@ public class YahooApiProvider implements RateProvider{
     public List<Rate> request() throws IOException {
         BasicHttpClient httpClient = new BasicHttpClient();
         HttpResponse response = httpClient.get(YAHOO_FINANCE_URL, null);
-        if (response == null){
+        if (response == null) {
             throw new IOException("Currency response is null");
         }
         int status = response.getStatus();
-        switch (status){
+        switch (status) {
             case HttpURLConnection.HTTP_OK:
                 String body = response.getBodyAsString();
                 return processBody(body);
@@ -65,13 +65,13 @@ public class YahooApiProvider implements RateProvider{
         }
     }
 
-    private List<Rate> processBody(String body) throws IOException{
+    private List<Rate> processBody(String body) throws IOException {
         Log.d(LOG_TAG, body);
         List<Rate> rates = new ArrayList<Rate>();
         try {
             Scanner scanner = new Scanner(body);
-            String line;
-            while ((line = scanner.nextLine()) != null){
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
                 String[] values = line.split(",");
 
                 String currString = values[0].substring(1, 4);
@@ -84,11 +84,11 @@ public class YahooApiProvider implements RateProvider{
                 String t = values[3];
                 String dt = unwrap(d) + " " + normalizeTimeString(unwrap(t));
                 // To upper case to convert am/pm to AM/PM
-                Date date = new SimpleDateFormat("M/d/yyyy h:m a", Locale.ENGLISH).parse(dt.toUpperCase());
+                Date date = new SimpleDateFormat("M/d/yyyy h:m a").parse(dt.toUpperCase());
                 Rate rate = new Rate(curr, value, date);
                 rates.add(rate);
             }
-        } catch (Exception e){
+        } catch (ParseException e) {
             throw new IOException(e);
         }
         return rates;

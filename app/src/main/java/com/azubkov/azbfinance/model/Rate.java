@@ -50,4 +50,13 @@ public class Rate {
     public Date getDate() {
         return date;
     }
+
+    @Override
+    public String toString() {
+        return "Rate{" +
+                "curr=" + curr +
+                ", value=" + value +
+                ", date=" + date +
+                '}';
+    }
 }

@@ -16,7 +16,6 @@
 
 package com.azubkov.azbfinance.data;
 
-import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -30,71 +29,83 @@ public class FinContract {
     public static final String CONTENT_AUTHORITY = "com.azubkov.azbfinance";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    public static final String PATH_ACCOUNT = "account";
-    public static final String PATH_CURRENCY = "currency";
-    public static final String PATH_RATE = "rate";
+    public static final String PATH_ACCOUNTS = "accounts";
+    public static final String PATH_CURRENCIES = "currencies";
+    public static final String PATH_RATES = "rates";
 
-    public static final class AccountEntry implements BaseColumns{
+    interface AccountColumns {
+        String ACCOUNT_ID = "account_id";
+        String ACCOUNT_BANK = "account_bank";
+        String ACCOUNT_AMOUNT = "account_amount";
+        String ACCOUNT_CURRENCY = "account_currency";
+    }
+
+    interface CurrencyColumns {
+        String CURRENCY_ID = "currency_id";
+        String CURRENCY_NAME = "currency_name";
+    }
+
+    interface RateColumns {
+        String RATE_TIMESTAMP = "rate_timestamp";
+        String RATE_CURRENCY = "rate_currency";
+        String RATE_VALUE = "rate_value";
+    }
+
+    public static final class Accounts implements BaseColumns, AccountColumns {
+
         public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_ACCOUNT).build();
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_ACCOUNTS).build();
 
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_ACCOUNT;
+                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_ACCOUNTS;
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_ACCOUNT;
+                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_ACCOUNTS;
 
+        public static Uri buildAccountUri(String accountId) {
+            return CONTENT_URI.buildUpon().appendPath(accountId).build();
+        }
 
-        public static final String TABLE_NAME = "account";
-
-        public static final String COLUMN_BANK = "bank";
-        public static final String COLUMN_AMOUNT = "amount";
-        public static final String COLUMN_CURRENCY = "currency";
-
-        public static Uri buildAccountUri(long id) {
-            return ContentUris.withAppendedId(CONTENT_URI, id);
+        public static String getAccountId(Uri uri) {
+            return uri.getLastPathSegment();
         }
 
     }
 
-    public static final class CurrencyEntry implements BaseColumns {
+    public static final class Currencies implements BaseColumns, CurrencyColumns {
 
         public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_CURRENCY).build();
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_CURRENCIES).build();
 
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_CURRENCY;
+                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_CURRENCIES;
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_CURRENCY;
+                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_CURRENCIES;
 
+        public static Uri buildCurrencyUri(String currencyId) {
+            return CONTENT_URI.buildUpon().appendPath(currencyId).build();
+        }
 
-        public static final String TABLE_NAME = "currency";
-        public static final String COLUMN_CURR = "curr";
-
-        public static Uri buildCurrencyUri(long id) {
-            return ContentUris.withAppendedId(CONTENT_URI, id);
+        public static String getCurrencyId(Uri uri) {
+            return uri.getLastPathSegment();
         }
     }
 
-    public static final class RateEntry implements BaseColumns {
+    public static final class Rates implements BaseColumns, RateColumns {
 
         public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_RATE).build();
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_RATES).build();
 
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_RATE;
+                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_RATES;
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_RATE;
+                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_RATES;
 
+        public static Uri buildRateUri(String rateId) {
+            return CONTENT_URI.buildUpon().appendPath(rateId).build();
+        }
 
-        public static final String TABLE_NAME = "rate";
-        public static final String COLUMN_TIMESTAMP = "timestamp";
-        public static final String COLUMN_FROM_CURR = "from_curr";
-        public static final String COLUMN_TO_CURR = "to_curr";
-        public static final String COLUMN_VALUE = "value";
-
-
-        public static Uri buildRateUri(long id) {
-            return ContentUris.withAppendedId(CONTENT_URI, id);
+        public static String getRateId(Uri uri) {
+            return uri.getLastPathSegment();
         }
     }
 

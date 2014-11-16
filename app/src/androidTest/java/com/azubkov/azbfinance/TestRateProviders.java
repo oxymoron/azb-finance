@@ -16,12 +16,18 @@
 
 package com.azubkov.azbfinance;
 
+import android.test.AndroidTestCase;
+
 /**
- * Created by oxymoron on 03.10.2014.
+ * Created on 13.11.14.
+ *
+ * @author Andrey Zubkov
  */
-public enum Curr {
-    USD,
-    RUB,
-    KRW,
-    EUR
+public class TestRateProviders extends AndroidTestCase {
+
+    public void testYahooProvider() throws Exception {
+//        YahooApiProvider provider = new YahooApiProvider();
+//        List<Rate> rates = provider.request();
+//        assertEquals(3, rates.size());
+    }
 }

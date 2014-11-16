@@ -21,10 +21,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 
-import com.azubkov.azbfinance.data.FinContract.AccountEntry;
-import com.azubkov.azbfinance.data.FinContract.CurrencyEntry;
-import com.azubkov.azbfinance.data.FinContract.RateEntry;
-import com.azubkov.azbfinance.data.FinDbHelper;
+import com.azubkov.azbfinance.data.FinContract.Accounts;
+import com.azubkov.azbfinance.data.FinContract.Currencies;
+import com.azubkov.azbfinance.data.FinContract.Rates;
+import com.azubkov.azbfinance.data.FinDatabase;
+import com.azubkov.azbfinance.data.FinDatabase.Tables;
 
 import java.util.Date;
 import java.util.Map;
@@ -43,40 +44,42 @@ public class TestDatabase extends AndroidTestCase {
 
     @Override
     protected void setUp() throws Exception {
-        db = new FinDbHelper(mContext).getWritableDatabase();
+        db = new FinDatabase(mContext).getWritableDatabase();
     }
 
     public void testCreateDb() throws Exception {
-        mContext.deleteDatabase(FinDbHelper.DB_NAME);
+        mContext.deleteDatabase(FinDatabase.DB_NAME);
         assertTrue(db.isOpen());
         db.close();
     }
 
     public void testAccounts() throws Exception {
         ContentValues values = new ContentValues();
-        values.put(AccountEntry.COLUMN_BANK, "KEB");
-        values.put(AccountEntry.COLUMN_AMOUNT, 10000.2);
-        values.put(AccountEntry.COLUMN_CURRENCY, 1);
-        validateInsertAndQuery(AccountEntry.TABLE_NAME, values);
+        values.put(Accounts._ID, 1);
+        values.put(Accounts.ACCOUNT_ID, "1");
+        values.put(Accounts.ACCOUNT_BANK, "KEB");
+        values.put(Accounts.ACCOUNT_AMOUNT, 10000.2);
+        values.put(Accounts.ACCOUNT_CURRENCY, 1);
+        validateInsertAndQuery(Tables.Accounts, values);
     }
 
     public void testCurrency() throws Exception {
         ContentValues values = new ContentValues();
-        values.put(CurrencyEntry.COLUMN_CURR, Curr.KRW.toString());
-        validateInsertAndQuery(CurrencyEntry.TABLE_NAME, values);
+        values.put(Currencies.CURRENCY_ID, "1");
+        values.put(Currencies.CURRENCY_NAME, Curr.KRW.toString());
+        validateInsertAndQuery(Tables.Currencies, values);
     }
 
     public void testRate() throws Exception {
         ContentValues values = new ContentValues();
-        values.put(RateEntry.COLUMN_TIMESTAMP, new Date().getTime());
-        values.put(RateEntry.COLUMN_FROM_CURR, 1);
-        values.put(RateEntry.COLUMN_TO_CURR, 2);
-        values.put(RateEntry.COLUMN_VALUE, 46.2345);
-        validateInsertAndQuery(RateEntry.TABLE_NAME, values);
+        values.put(Rates.RATE_TIMESTAMP, new Date().getTime());
+        values.put(Rates.RATE_CURRENCY, 1);
+        values.put(Rates.RATE_VALUE, 46.2345);
+        validateInsertAndQuery(Tables.Rates, values);
     }
 
     private void validateInsertAndQuery(String table, ContentValues values) {
-        long id = db.insert(table, null, values);
+        long id = db.insertOrThrow(table, null, values);
         assertTrue(id != -1);
         Cursor cursor = db.query(
                 table,

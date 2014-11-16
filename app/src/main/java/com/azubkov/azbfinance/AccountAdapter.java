@@ -25,7 +25,7 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.azubkov.azbfinance.data.FinContract.AccountEntry;
+import com.azubkov.azbfinance.data.FinContract.Accounts;
 
 /**
  * Created by oxymoron on 02.10.2014.
@@ -63,9 +63,9 @@ public class AccountAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
-        double amount = cursor.getDouble(cursor.getColumnIndex(AccountEntry.COLUMN_AMOUNT));
-        String bank = cursor.getString(cursor.getColumnIndex(AccountEntry.COLUMN_BANK));
-        String currency = cursor.getString(cursor.getColumnIndex(AccountEntry.COLUMN_CURRENCY));
+        double amount = cursor.getDouble(cursor.getColumnIndex(Accounts.ACCOUNT_AMOUNT));
+        String bank = cursor.getString(cursor.getColumnIndex(Accounts.ACCOUNT_BANK));
+        String currency = cursor.getString(cursor.getColumnIndex(Accounts.ACCOUNT_CURRENCY));
 
         Curr curr = Curr.valueOf(currency);
         viewHolder.bankView.setText(bank);
